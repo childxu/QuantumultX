@@ -85,10 +85,7 @@ function initial() {
     }
 }
 
-<<<<<<< HEAD
 ;
-=======
->>>>>>> upstream/master
 (sign = () => {
     senku.log(`🔔 ${cookieName}`)
     senku.getdata('tokenMidu_read') ? '' : senku.msg('米读阅读', '', '不存在Cookie')
@@ -112,7 +109,6 @@ async function all() {
         const key = signbodyVal
         const token = tokenVal
         initial()
-<<<<<<< HEAD
 
         await readTime(headerVal, token, urlVal)
         await userInfo(key)
@@ -169,62 +165,6 @@ function drawPrize(bodyVal) {
     })
 }
 
-=======
-
-        await readTime(headerVal, token, urlVal)
-        await userInfo(key)
-        await prizeInfo(key)
-        if (signinfo.prizeInfo.data.total_num) {
-            await prizeTask(key)
-            await drawPrize(key)
-        }
-        await showmsg()
-        senku.done()
-    } catch (e) {
-        senku.msg(cookieName, `失败`, `说明: ${e}`)
-        senku.log(`❌ ${cookieName}  - 失败: ${e}`)
-        senku.done()
-    }
-}
-
-function double() {
-    initial()
-    DualAccount = false
-    if (senku.getdata('tokenMidu_read2')) {
-        tokenVal = senku.getdata('tokenMidu_read2')
-        readTimeheaderVal = senku.getdata('senku_readTimeheader_midu2')
-        readTimebodyVal = senku.getdata('senku_readTimebody_midu2')
-        signbodyVal = senku.getdata('senku_signbody_midu2')
-        all()
-    }
-}
-// 抽奖
-function drawPrize(bodyVal) {
-    return new Promise((resolve, reject) => {
-        const drawPrizeurlVal = 'https://apiwz.midukanshu.com/wz/task/drawPrize?' + bodyVal
-        const url = {
-            url: drawPrizeurlVal,
-            headers: {}
-        }
-        url.headers['Host'] = 'apiwz.midukanshu.com'
-        url.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-        url.headers['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
-        senku.post(url, (error, response, data) => {
-            try {
-                senku.log(`🐍🐢 ${cookieName} drawPrize - response: ${JSON.stringify(response)}`)
-                data ? signinfo.drawPrize = JSON.parse(data) : signinfo.drawPrize = null
-                resolve()
-            } catch (e) {
-                // senku.msg(cookieName, `抽奖: 失败`, `说明: ${e}`)
-                senku.log(`❌ ${cookieName} drawPrize - 抽奖失败: ${e}`)
-                senku.log(`❌ ${cookieName} drawPrize - response: ${JSON.stringify(response)}`)
-                resolve()
-            }
-        })
-    })
-}
-
->>>>>>> upstream/master
 // 观看视频获取抽奖机会
 function prizeTask(bodyVal) {
     return new Promise((resolve, reject) => {
@@ -239,13 +179,9 @@ function prizeTask(bodyVal) {
         senku.post(url, (error, response, data) => {
             try {
                 senku.log(`🐍🐢 ${cookieName} prizeTask - response: ${JSON.stringify(response)}`)
-<<<<<<< HEAD
                 if (data) {
                     signinfo.prizeTask = JSON.parse(data)
                 }
-=======
-                data ? signinfo.prizeTask = JSON.parse(data) : signinfo.prizeTask = null
->>>>>>> upstream/master
                 resolve()
             } catch (e) {
                 // senku.msg(cookieName, `观看视频抽奖: 失败`, `说明: ${e}`)
@@ -271,13 +207,9 @@ function prizeInfo(bodyVal) {
         senku.post(url, (error, response, data) => {
             try {
                 senku.log(`🐍🐢 ${cookieName} prizeInfo - response: ${JSON.stringify(response)}`)
-<<<<<<< HEAD
                 if (data) {
                     signinfo.prizeInfo = JSON.parse(data)
                 }
-=======
-                data ? signinfo.prizeInfo = JSON.parse(data) : signinfo.prizeInfo = null
->>>>>>> upstream/master
                 resolve()
             } catch (e) {
                 // senku.msg(cookieName, `抽奖信息: 失败`, `说明: ${e}`)
@@ -295,11 +227,7 @@ function readTime(header, token, urlVal) {
             url: 'https://apiwz.midukanshu.com/user/readTimeBase/readTime?' + urlVal,
             headers: {
                 'host': 'apiwz.midukanshu.com',
-<<<<<<< HEAD
                 'versionName': '1.7.2.0501.1930',
-=======
-                'versionName': '1.7.1.0430.1512',
->>>>>>> upstream/master
                 "User-Agent": "MRSpeedNovel/0430.1512 CFNetwork/1125.2 Darwin/19.5.0",
                 "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
                 'token': token,
@@ -310,13 +238,9 @@ function readTime(header, token, urlVal) {
         senku.post(url, (error, response, data) => {
             try {
                 senku.log(`🐍🐢 ${cookieName} readTime - response: ${JSON.stringify(response)}`)
-<<<<<<< HEAD
                 if (data) {
                     signinfo.readTime = JSON.parse(data)
                 }
-=======
-                data ? signinfo.readTime = JSON.parse(data) : signinfo.readTime = null
->>>>>>> upstream/master
                 resolve()
             } catch (e) {
                 // senku.msg(cookieName, `阅读时长: 失败`, `说明: ${e}`)
@@ -342,13 +266,9 @@ function userInfo(bodyVal) {
         senku.post(url, (error, response, data) => {
             try {
                 senku.log(`🐍🐢 ${cookieName} userInfo - response: ${JSON.stringify(response)}`)
-<<<<<<< HEAD
                 if (data) {
                     signinfo.userInfo = JSON.parse(data)
                 }
-=======
-                data ? signinfo.userInfo = JSON.parse(data) : signinfo.userInfo = null
->>>>>>> upstream/master
                 resolve()
             } catch (e) {
                 // senku.msg(cookieName, `用户信息: 失败`, `说明: ${e}`)
@@ -364,18 +284,13 @@ function showmsg() {
     return new Promise((resolve, reject) => {
         let subTitle = ''
         let detail = ''
-<<<<<<< HEAD
         const name = signinfo.userInfo && signinfo.userInfo.data && signinfo.userInfo.data.nickname ? signinfo.userInfo.data.nickname : `账户已退出`
-=======
-        const name = signinfo.userInfo.data.nickname ? signinfo.userInfo.data.nickname : `未设置昵称`
->>>>>>> upstream/master
         if (signinfo.readTime && signinfo.readTime.code == 0) {
             const coin = signinfo.readTime.data.coin
             const readTotalMinute = signinfo.readTime.data.readTotalMinute
             const total_coin = signinfo.readTime.data.total_coin
             coin == 0 ? detail += `` : detail += `【阅读时长】获得${coin}💰`
             readTotalMinute ? detail += ` 阅读时长${readTotalMinute / 2}分钟,该账户:${total_coin}💰` : detail += `该账户:${total_coin}💰`
-<<<<<<< HEAD
         } else if (signinfo.readTime && signinfo.readTime.code != 0) {
             detail += `【阅读时长】错误代码${signinfo.readTime.code},错误信息${signinfo.readTime.message}`
             senku.msg(cookieName + ` 用户:${name}`, subTitle, detail)
@@ -384,19 +299,6 @@ function showmsg() {
         if (senku.getdata('debug') == 'true' || detail && signinfo.readTime && signinfo.readTime.data && signinfo.readTime.data.readTotalMinute % 60 == 0) {
             senku.msg(cookieName + ` 用户:${name}`, subTitle, detail)
         } else if (senku.getdata('debug') == 'true' || signinfo.readTime && signinfo.readTime.data && signinfo.readTime.data.readTotalMinute % 60 == 0) {
-=======
-        } else if (signinfo.readTime.code != 0) {
-            detail += `【阅读时长】错误代码${signinfo.readTime.code},错误信息${signinfo.readTime.message}`
-            senku.msg(cookieName + ` 用户:${name}`, subTitle, detail)
-        } else {
-            detail += '【阅读时长】失败'
-            senku.msg(cookieName + ` 用户:${name}`, subTitle, detail)
-        }
-
-        if (senku.getdata('debug') == 'true' || detail && signinfo.readTime.data.readTotalMinute % 60 == 0) {
-            senku.msg(cookieName + ` 用户:${name}`, subTitle, detail)
-        } else if (senku.getdata('debug') == 'true' || signinfo.readTime.data.readTotalMinute % 60 == 0) {
->>>>>>> upstream/master
             senku.msg(cookieName + ` 用户:${name}`, '阅读结果', '时间未到')
         }
 
