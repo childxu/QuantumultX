@@ -33,12 +33,13 @@ hostname = draw.jdfcloud.com
 const cookieName = '来客有礼小程序'
 const signurlKey = 'sy_signurl_lkyl'
 const signheaderKey = 'sy_signheader_lkyl'
+const openkey = 'openid_lkyl'
+const appIdkey = 'app_lkyl'
 const sy = init()
 const signurlVal = sy.getdata(signurlKey)
 const signheaderVal = sy.getdata(signheaderKey)
-const token = JSON.parse(sy.getdata(signheaderKey))
-const openid = token['openId']
-const appid = token['App-Id']
+const openid = sy.getdata(openkey)
+const appid = sy.getdata(appIdkey)
 let isGetCookie = typeof $request !== 'undefined'
 if (isGetCookie) {
    GetCookie()
@@ -50,11 +51,14 @@ const requrl = $request.url
 if ($request && $request.method != 'OPTIONS') {
   const signurlVal = requrl
   const signheaderVal = JSON.stringify($request.headers)
-  const cookieVal = $request.headers['Cookie'];
+  const openid = $request.headers['openId'];
+  const appid = $request.headers['App-Id'];
   sy.log(`signurlVal:${signurlVal}`)
   sy.log(`signheaderVal:${signheaderVal}`)
   if (signurlVal) sy.setdata(signurlVal, signurlKey)
   if (signheaderVal) sy.setdata(signheaderVal, signheaderKey)
+     sy.setdata(openid,openkey);
+     sy.setdata(appid,appIdkey)
   sy.msg(cookieName, `获取Cookie: 成功🎉`, ``)
   }
  }
@@ -62,10 +66,11 @@ if ($request && $request.method != 'OPTIONS') {
 async function all() 
 { 
   await sign();
-  await status();
   await lottery();
-  await bean();
-  await total();
+  await status();
+  await Daily();
+  await weektask();
+  await total()
 }
 
 function sign() {
@@ -79,7 +84,7 @@ function sign() {
       const title = `${cookieName}`
       if (result.success == true) {
       res = `  签到成功🎉`
-      detail = `${result.data.topLine},${result.data.rewardName},获得京豆: ${result.data.jdBeanQuantity}  `
+      detail = `${result.data.topLine},${result.data.rewardName}， 获得${result.data.jdBeanQuantity}个京豆\n`
       } else if (result.errorMessage == `今天已经签到过了哦`) {
       res = `  重复签到`
       detail = ``
@@ -92,6 +97,29 @@ function sign() {
    })
  }
 
+// 0元抽奖统计
+function lottery() {
+   return new Promise((resolve, reject) =>{
+	  let daytaskurl = {
+		url: `https://draw.jdfcloud.com//api/bean/square/getTaskInfo?openId=${openid}&taskCode=lottery&appId=${appid}`,
+		headers: JSON.parse(signheaderVal)
+	}
+     daytaskurl.headers[`Content-Length`] = `0`;
+    sy.get(daytaskurl, (error, response, data) => {
+    //sy.log(`${cookieName}, 今日0元抽奖 ${data}`)
+      let lotteryres = JSON.parse(data)
+      Incomplete = lotteryres.data.totalSteps - lotteryres.data.doneSteps
+     if (Incomplete >0 ){
+     award();
+     detail += `您有${Incomplete}个0元抽奖未完成\n`
+     }
+     else if (Incomplete == 0 ){
+detail += `今日0元抽奖任务已完成，获得${lotteryres.data.rewardAmount}个银币\n` }
+   resolve()
+   }) 
+  })
+}
+
 function status() {
  return new Promise((resolve, reject) =>{
    let statusurl = {
@@ -101,16 +129,13 @@ function status() {
    sy.get(statusurl, (error, response, data) =>{
      sy.log(`${cookieName}, data: ${data}`)
      taskstatus = JSON.parse(data)
-      if(taskstatus.data.dailyTasks[0].status!='received'){
-      award()
-      }
-      else if (taskstatus.data.dailyTasks[0].status=='received') {
-      detail += `今日0元抽奖任务已完成，获得${taskstatus.data.dailyTasks[0].taskReward}个银币\n` };
    if (taskstatus.data.dailyTasks[1].status!='received'){
+    for (i=0;i<3;i++){
       video() 
+       }
       }
    else if (taskstatus.data.dailyTasks[1].status=='received'){
-   detail += `视频任务已完成，获得${taskstatus.data.dailyTasks[1].taskReward}个银币\n` }
+   detail += `视频任务已完成，获得${taskstatus.data.dailyTasks[1].taskReward}个银币` }
   })
    resolve()
   })
@@ -125,7 +150,7 @@ function video() {
           body: bodyVal}
     videourl.headers['Content-Length'] = `0`;
    sy.post(videourl, (error, response, data) =>{
-      //sy.log(`${cookieName}, 视频: ${data}`)
+      sy.log(`${cookieName}, 视频: ${data}`)
     let videotaskurl = {
 	 url: `https://draw.jdfcloud.com//api/bean/square/silverBean/taskReward/get?openId=${openid}&taskCode=watch_video&inviterOpenId=&appId=${appid}`,headers: JSON.parse(signheaderVal)}
     videotaskurl.headers['Content-Length'] = `0`;
@@ -136,22 +161,7 @@ function video() {
 resolve()
  })
 }
-// 0元抽奖统计
-function lottery() {
-   return new Promise((resolve, reject) =>{
-	  let daytaskurl = {
-		url: `https://draw.jdfcloud.com//api/bean/square/getTaskInfo?openId=${openid}&taskCode=lottery&appId=${appid}`,
-		headers: JSON.parse(signheaderVal)
-	}
-     daytaskurl.headers[`Content-Length`] = `0`;
-    sy.get(daytaskurl, (error, response, data) => {
-    sy.log(`${cookieName}, 今日0元抽奖 ${data}`)
-      let lotteryres = JSON.parse(data)
-      Incomplete = lotteryres.data.totalSteps - lotteryres.data.doneSteps
-   resolve()
-   }) 
-  })
-}
+
 //0元抽奖循环
 function award() {
    return new Promise((resolve, reject) =>{
@@ -160,44 +170,55 @@ function award() {
 		headers: JSON.parse(signheaderVal)}
      weektaskurl.headers['Content-Length'] = `0`;
     sy.get(weektaskurl, (error, response, data) => {
-     sy.log(`${cookieName}, data: ${data}`)
+     //sy.log(`${cookieName}, data: ${data}`)
       result = JSON.parse(data)
     if (result.success == true) {
-     if (Incomplete >0 ){
-    detail += `您有${Incomplete}个0元抽奖任务未完成`
-      for (k=0;result.data.homeActivities[k].participated==false&& k<3;k++){
-sy.log(k)
+      for (k=0;result.data.homeActivities[k].participated==false&&k<Incomplete;k++){
         lotteryId = result.data.homeActivities[k].activityId
     let awardurl = {  
          url: `https://draw.jdfcloud.com//api/lottery/participate?lotteryId=${lotteryId}&openId=${openid}&formId=123&source=HOME&appId=${appid}`,headers: JSON.parse(signheaderVal),body: '{}'
 }
    sy.post(awardurl, (error, response, data) =>
-      {
+    {
      //sy.log(`${cookieName}, 抽奖任务: ${data}`)
                });
              }
-            }
+       resolve()
           }
        })
-resolve()
     })
   }
 
-//抽奖银豆
-function bean() {
+//日常抽奖银豆
+function Daily() {
 return new Promise((resolve, reject) => {
- let bean2url = {
+ let beanurl = {
 		url: `https://draw.jdfcloud.com//api/bean/square/silverBean/taskReward/get?openId=${openid}&taskCode=lottery&taskType=lottery&inviterOpenId=&appId=${appid}`,
 		headers: JSON.parse(signheaderVal)
 	}
-   bean2url.headers['Content-Length'] = `0`;
-    sy.get(bean2url, (error, response, data) =>
+   beanurl.headers['Content-Length'] = `0`;
+    sy.get(beanurl, (error, response, data) =>
   {
-     //sy.log(`${cookieName}, data: ${data}`)
+     sy.log(`${cookieName}, data: ${data}`)
     })
    resolve()
    })
 }
+// 每周抽奖任务
+function weektask() {
+return new Promise((resolve, reject) => {
+ let bean2url = {
+      url: `https://draw.jdfcloud.com//api/bean/square/silverBean/taskReward/get?openId=${openid}&taskCode=lottery_multi&taskType=lottery_multi&inviterOpenId=&appId=${appid}`,
+      headers: JSON.parse(signheaderVal)
+	}
+   bean2url.headers['Content-Length'] = `0`;
+    sy.get(bean2url, (error, response, data) =>
+  {
+    })
+   resolve()
+   })
+}
+
 //总计
 function total() {
    return new Promise((resolve, reject) =>{
@@ -207,7 +228,7 @@ function total() {
 	}
      lotteryurl.headers['Content-Length'] = `0`;
     sy.get(lotteryurl, (error, response, data) => {
-      sy.log(`${cookieName}, data: ${data}`)
+    sy.log(`${cookieName}, data: ${data}`)
       let result = JSON.parse(data)
       const title = `${cookieName}`
       if (result.success == true) {
@@ -219,23 +240,28 @@ function total() {
 	 headers: JSON.parse(signheaderVal)}
     hinturl.headers['Content-Length'] = `0`;
     sy.get(hinturl, (error, response, data) => {
-      sy.log(`${cookieName}, data: ${data}`)
+      //sy.log(`${cookieName}, data: ${data}`)
       let result = JSON.parse(data)
       const title = `${cookieName}`
-      if (SilverBean >= result.datas[0].salePrice) {
+
+   if (SilverBean >result.datas[0].salePrice) {
     for (k=0; k < result.datas.length;k++){
     if (result.datas[k].salePrice >= SilverBean && SilverBean > result.datas[k-1].salePrice)
      {
       subTitle += `${result.datas[k-1].memo}(手动兑换)`}
+
     }
    } else if (SilverBean < result.datas[0].salePrice) 
     { 
-    subTitle += `  银豆不足以兑换京豆`
+       subTitle += `  银豆不足以兑换京豆`
     }
-    sy.msg(title+res, subTitle, detail)
+else if (SilverBean = result.datas[0].salePrice) 
+    { 
+       subTitle +=`${result.datas[0].memo}(手动兑换)`
+    }
+    sy.msg(cookieName+res, subTitle, detail)
     })
    })
-  resolve()
  })
 }
 function init() {
