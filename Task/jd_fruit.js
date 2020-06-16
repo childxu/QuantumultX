@@ -13,7 +13,6 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 //直接用NobyDa的jd cookie
 const cookie = $prefs.valueForKey('CookieJD')
 const name = '京东水果'
-<<<<<<< HEAD
 //我的sharecode:05acc8e881204394b19768010fecf381
 var shareCodes = [ // 这个列表填入你要助力的好友的shareCode, 最多可能是5个? 没有验证过
     'b68f97fd61724fe68066cca9ab636ada',
@@ -21,13 +20,6 @@ var shareCodes = [ // 这个列表填入你要助力的好友的shareCode, 最�
     'c4f6bc7a54a048cbb39f58dbae05ad5e',
     '1aefdabb6ed84eb0bb90915239d2d48a',
     '89d3e6a5279e477c8e07a3c1a91f7cd7'
-=======
-
-var shareCodes = [ // 这个列表填入你要助力的好友的shareCode
-    'a6f686a9f6aa4c80977370b03681c553',
-    'f92cb56c6a1349f5a35f0372aa041ea0',
-    'a9360baeceb04c9baaaa109f5d428d3c',
->>>>>>> upstream/master
 ]
 var Task = step();
 Task.next();
@@ -153,19 +145,11 @@ function* step() {
                         //猜测 还没到那阶段 不知道对不对
                         message += `【猜测】应该可以领取水果了，请去农场查看\n`
                         break
-<<<<<<< HEAD
                     }
                     if (waterResult.totalEnergy < 10) {
                         console.log(`水滴不够，结束浇水`)
                         break
                     }
-=======
-                    }
-                    if (waterResult.totalEnergy < 10) {
-                        console.log(`水滴不够，结束浇水`)
-                        break
-                    }
->>>>>>> upstream/master
                 }
                 farmTask = yield taskInitForFarm();
                 message += `【自动浇水】浇水${waterCount}次，今日浇水${farmTask.totalWaterTaskInit.totalWaterTaskTimes}次\n`
@@ -295,19 +279,11 @@ function* step() {
 function lotteryForTurntableFarm() {
     request(arguments.callee.name.toString(), { type: 1, version: 4, channel: 1 });
 }
-<<<<<<< HEAD
 
 function timingAwardForTurntableFarm() {
     request(arguments.callee.name.toString(), { version: 4, channel: 1 });
 }
 
-=======
-
-function timingAwardForTurntableFarm() {
-    request(arguments.callee.name.toString(), { version: 4, channel: 1 });
-}
-
->>>>>>> upstream/master
 // 初始化集卡抽奖活动数据
 function initForTurntableFarm() {
     request(arguments.callee.name.toString(), { version: 4, channel: 1 });
