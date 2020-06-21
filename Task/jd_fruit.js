@@ -99,9 +99,6 @@ const name = '京东水果'
 //我的sharecode:05acc8e881204394b19768010fecf381
 var shareCodes = [ // 这个列表填入你要助力的好友的shareCode, 最多可能是5个? 没有验证过
     'b68f97fd61724fe68066cca9ab636ada',
-    '33ac621a4e6c4e3c9c33ace1c241381d',
-    'c4f6bc7a54a048cbb39f58dbae05ad5e',
-    '1aefdabb6ed84eb0bb90915239d2d48a'
 ]
 var Task = step();
 Task.next();
