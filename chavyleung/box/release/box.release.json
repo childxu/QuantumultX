@@ -1,6 +1,178 @@
 {
   "releases": [
     {
+      "version": "0.4.23",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "优化",
+          "descs": ["侧栏样式 (紧凑化)"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.22",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "修复",
+          "descs": ["后台日志报 illegal 问题"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.21",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "新增",
+          "descs": ["颜色主题可跟随系统 (明亮主题下强制使用彩色图标)"]
+        },
+        {
+          "name": "修复",
+          "descs": ["有新版本但没有提示问题"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.20",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "新增",
+          "descs": ["明暗主题切换"]
+        },
+        {
+          "name": "优化",
+          "descs": ["页面渲染资源"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.19",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "修复",
+          "descs": ["v0.4.18 白屏问题 (百果园空图标导致)"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.18",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "新增",
+          "descs": ["仓库协作者&贡献者信息 (带跳转)", "点击订阅可以跳转至作者仓库"]
+        },
+        {
+          "name": "修复",
+          "descs": ["删除多余日志输出"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.17",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "修复",
+          "descs": ["Loon升级教程字眼错误问题"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.16",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "优化",
+          "descs": ["iPhone X 底栏样式优化 (避免 bar 遮挡)"]
+        },
+        {
+          "name": "修复",
+          "descs": ["多行文本控件 rows 属性无效问题"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.15",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "修复",
+          "descs": ["多选组控件全部取消时会恢复到默认问题"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.14",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "新增 (面向开发者)",
+          "descs": ["数字控件 (number)"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.13",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "性能",
+          "descs": ["优化订阅刷新性能 (并行)"]
+        }
+      ]
+    },
+    {
+      "version": "0.4.12",
+      "tags": ["beta"],
+      "author": "@chavyleung",
+      "icon": "https://avatars3.githubusercontent.com/u/29748519",
+      "repo": "https://github.com/chavyleung",
+      "notes": [
+        {
+          "name": "修复",
+          "descs": ["部分情况下刷新&添加订阅无效问题"]
+        }
+      ]
+    },
+    {
       "version": "0.4.11",
       "tags": ["beta"],
       "author": "@chavyleung",
