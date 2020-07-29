@@ -67,6 +67,7 @@ if (isGetCookie) {
    GetCookie()
 } else {
    all()
+   
 }
 
 function GetCookie() {
